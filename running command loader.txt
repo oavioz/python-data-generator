@@ -1,0 +1,69 @@
+psql "dbname=rbac_multitenants host=127.0.0.1 user=postgres password=postgres port=5432 sslmode=require"
+
+COPY subscriptions(tenant_id,first_name,last_name,email,password,created_at,updated_at,is_active,is_deleted) FROM '/Users/oshikavioz/testFaker/subscriptions/subscriptions_0.csv' WITH (FORMAT csv);
+
+COPY subscriptions FROM '~/testFaker/subscriptions_0.csv' WITH FORMAT csv;
+
+/Users/oshikavioz/testFaker/subscriptions
+
+psql -U postgres -d rbac_multitenants -c "COPY subscriptions (tenant_id,first_name,last_name,email,password,created_at,updated_at,is_active,is_deleted) FROM '/Users/oshikavioz/testFaker/subscriptions/subscriptions_0.csv' WITH (FORMAT CSV, HEADER FALSE);"
+
+psql -U postgres -d rbac_multitenants -c "COPY user_roles (tenant_id,first_name,last_name,email,password,created_at,updated_at,is_active,is_deleted) FROM '/Users/oshikavioz/testFaker/subscriptions/subscriptions_0.csv' WITH (FORMAT CSV, HEADER FALSE);"
+
+
+psql -U postgres -d rbac_multitenants -c "COPY baz (role_id,permissions) FROM '/Users/oshikavioz/OneDrive - Microsoft/Projects/Dojo/test.csv' WITH (FORMAT CSV, HEADER FALSE);"
+
+psql -U postgres -d rbac_multitenants -c "COPY baz FROM '/Users/oshikavioz/OneDrive - Microsoft/Projects/Dojo/test.csv' DELIMITER ',' CSV ESCAPE E'\\';"
+1,"{\"a\": \"b\"}"
+
+python3 create_users_cvs_files.py 2 subscriptions /Users/oshikavioz/testFaker/subscriptions/
+python3 create_user_roles_csv_files.py 2 user_roles  /Users/oshikavioz/testFaker/user_roles/
+
+python3 users-profiles-data-pump.py /Users/oshikavioz/testFaker/subscriptions
+python3 users-profiles-data-pump.py /Users/oshikavioz/testFaker/user_roles
+
+python create_users_cvs_files.py 2 subscriptions ~/Workspace/Dojo/user-service/output/subscriptions/ 500
+python create_tenants_cvs_files.py 2 tenants ~/Workspace/Dojo/user-service/output/tenants/ 300
+
+
+docker exec -it postgres psql -U testuser -d testdb -f ~/Workspace/Dojo/user-service/output/tenants
+
+sudo docker exec -it postgres psql "dbname=testdb host=localhost user=testuser password=testuser1!" -c "\COPY subscriptions (tenant_id,first_name,last_name,email,password,created_at,updated_at,is_active,is_deleted) FROM '/tmp/500subscriptions_0.csv' WITH (FORMAT CSV, HEADER FALSE);"
+
+ sudo docker exec -it postgres psql "dbname=testdb host=localhost user=testuser password=testuser1!"
+
+ -v /tmp/pgdata:/var/lib/postgresql/data
+
+ sudo docker cp ~/Workspace/Dojo/user-service/output/subscriptions/. postgres:/dev
+
+ psql "dbname=userservice host=localhost user=postgres password=postgres" -c "\COPY subscriptions (tenant_id,first_name,last_name,email,password,created_at,updated_at,is_active,is_deleted) FROM '~/Workspace/Dojo/user-service/output/subscriptions/500subscriptions_0.csv' WITH (FORMAT CSV, HEADER FALSE);"
+
+
+python create_subscription_roles_csv_files.py 2 subscription_roles_temp  /home/dev/Workspace/Dojo/user-service/output/subscription_roles_temp/ 10000
+python create_subscription_roles_csv_files.py 2 subscription_roles_temp  /home/dev/Workspace/Dojo/user-service/output/subscription_roles_temp/ 10000
+
+python users-service-data-pump.py /home/dev/Workspace/Dojo/user-service/output/tenants
+python users-service-data-pump.py /home/dev/Workspace/Dojo/user-service/output/subscriptions
+python users-service-data-pump.py /home/dev/Workspace/Dojo/user-service/output/role_permissions
+
+
+1. Create user service schema and csv files for each table
+    1.1 psql "dbname=userservice host=localhost user=postgres password=postgres" -f ~/Workspace/Dojo/user-service/user_service.sql
+    -- Create tenants csv files: python create_tenants_cvs_files.py <howManyFiles> <base_filename> <pathArray> <maxRows>
+    1.2 python create_tenants_cvs_files.py 2 tenants  ~/Workspace/Dojo/user-service/output/tenants/ 1000
+    -- Create subscriptions csv files
+    1.3 python create_subscriptions_cvs_files.py 2 subscriptions  ~/Workspace/Dojo/user-service/output/subscriptions/ 10000
+    -- Create roles permissions <SQL files>
+    1.4 psql "dbname=userservice host=localhost user=postgres password=postgres" -f ~/Workspace/Dojo/user-service/role_permissions.sql
+    -- Create subscription roles  - temp csv file(rows duplication)
+    1.5 python create_subscription_roles_csv_files.py 2 subscription_roles_temp  ~/Workspace/Dojo/user-service/output/subscription_roles_temp/ 10000
+2. Load csv file for each table
+    --  Load tenants csv files into tenants table: python users-service-data-pump.py <input path of csv files>
+    2.1 python users-service-data-pump.py ~/Workspace/Dojo/user-service/output/tenants
+    -- Load subscriptions csv files into subscriptions table
+    2.2 python users-service-data-pump.py ~/Workspace/Dojo/user-service/output/subscriptions
+    -- Load subscription_roles_temp csv files into subscription_roles_temp table
+    2.3 python users-service-data-pump.py ~/Workspace/Dojo/user-service/output/subscription_roles_temp/
+    -- Load to permamaent table subscription_roles
+    2.4 psql "dbname=userservice host=localhost user=postgres password=postgres" -f ~/Workspace/Dojo/user-service/subscription_roles.sql
+

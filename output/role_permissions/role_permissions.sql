@@ -1,0 +1,4 @@
+ insert into role_permissions(role_name,role_permissions,created_at,updated_at,is_deleted) 
+ values('admin'::varchar(255), '{"can_create":"yes","can_update": "yes","can_delete": "yes","can_insert": "yes"}'::json, '2019-04-09 05:07:04'::timestamp,'2019-04-09 05:07:04'::timestamp, True::boolean),
+       ('editor'::varchar(255), '{"can_edit":"yes","can_create": "no"}'::json, '2019-04-09 05:07:04'::timestamp,'2019-04-09 05:07:04'::timestamp, True::boolean),
+       ('guest'::varchar(255), '{"can_edit":"yes","can_create": "no","can_detete": "no"}'::json, '2019-04-09 05:07:04'::timestamp,'2019-04-09 05:07:04'::timestamp, True::boolean) ;
