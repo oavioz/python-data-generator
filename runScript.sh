@@ -3,6 +3,7 @@
 ## Create user service schema and csv files for each table
 
 mkdir -p   ~/Workspace/Dojo/user-service && cd $_
+cp -r python-data-generator/* .
 
     psql "dbname=userservice host=localhost user=postgres password=postgres" -f ~/Workspace/Dojo/user-service/user_service.sql
     # Create tenants csv files: python create_tenants_cvs_files.py <howManyFiles> <base_filename> <pathArray> <maxRows>
