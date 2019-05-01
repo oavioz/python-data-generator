@@ -8,8 +8,8 @@ Create a number of fake CVS files. These files have an arbitrary length (from
 
 Requires python-faker (http://github.com/threadsafelabs/python-faker)
 
-Created by Ryan Wilcox on 2010-06-27.
-Please consider this code as part of the public domain
+Created by Oshik Avioz  on 2019-04-03.
+
 """
 
 import sys

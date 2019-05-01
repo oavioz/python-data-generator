@@ -19,7 +19,7 @@ def loadfile(file):
         elif "tenants" in file:
             query += " -c \" COPY tenants (tenant_name,created_at,updated_at,is_active,is_deleted) FROM '" + file + "' WITH (FORMAT csv);\""
         elif "role_permissions" in file:
-            query += " -f /home/dev/Workspace/Dojo/user-service/role_permissions.sql"
+            query += " -f role_permissions.sql"
         elif "subscription_roles" in file:
             query += " -c \" COPY subscription_roles_temp (subscription_id,role_permissions_id,permission_extention,created_at,updated_at,is_deleted) FROM '" + file + "' WITH (FORMAT csv);\""
         else:
