@@ -1,9 +1,15 @@
-1. Install Python 3.5 or later
-2. Install Faker
-3. Clone the project
+Prerequisit:
+
+1. Ubuntu 16.04 or later(tested on 18.04)
+2. Install Python 3.5 or later
+3. Install Faker
+
+Installation:
+
+1. Clone the project
     git clone https://github.com/oavioz/python-data-generator.git
-4. cd python-data-generator
-5. run the bash script: 
+2. cd python-data-generator
+3. run the bash script: 
     ./runScript.sh
 
 #!/bin/bash
