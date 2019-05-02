@@ -1,8 +1,9 @@
 Prerequisit:
 
 1. Ubuntu 16.04 or later(tested on 18.04)
-2. Install Python 3.5 or later
-3. Install Faker
+2. Install PostgreSQL 10.x or later (tested on 10.7.0)
+3. Install Python 3.5 or later
+4. Install Faker: pip install Faker
 
 Installation:
 
