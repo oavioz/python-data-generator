@@ -1,6 +1,12 @@
+
+Generate massive amounts of fake data for user services schema. 
+
+Created by Oshik Avioz  on 2019-04-03.
+
 Prerequisit:
 
-1. Ubuntu 16.04 or later(tested on 18.04)
+1. Ubuntu 16.04 or later(tested on 18.04):
+    https://www.postgresql.org/download/linux/ubuntu/
 2. Install PostgreSQL 10.x or later (tested on 10.7.0)
 3. Install Python 3.5 or later
 4. Install Faker: pip install Faker
