@@ -6,7 +6,7 @@ Prerequisit:
 
 Installation:
 
-1. Clone the project
+1. Clone the project: 
     git clone https://github.com/oavioz/python-data-generator.git
 2. cd python-data-generator
 3. run the bash script: 
