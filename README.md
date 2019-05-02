@@ -1,15 +1,14 @@
-1. Install Python3
-2. pip3 install Faker
+1. Install Python 3.5 or later
+2. Install Faker
 3. Clone the project
-4. run the bash script: 
+    git clone https://github.com/oavioz/python-data-generator.git
+4. cd python-data-generator
+5. run the bash script: 
     ./runScript.sh
 
 #!/bin/bash
 
 ## Create user service schema and csv files for each table
-
-#mkdir -p   ~/Workspace/Dojo/user-service && cd $_
-#cp -r ~/python-data-generator/* .
 
     psql "dbname=userservice host=localhost user=postgres password=postgres" -f user_service.sql
     # Create tenants csv files: python create_tenants_cvs_files.py <howManyFiles> <base_filename> <pathArray> <maxRows>
@@ -20,6 +19,8 @@
     psql "dbname=userservice host=localhost user=postgres password=postgres" -f role_permissions.sql
     # Create subscription roles  - temp csv file(rows duplication)
     python3 create_subscription_roles_csv_files.py 2 subscription_roles_temp  output/subscription_roles_temp/ 10000
+
+    
 # Load csv file for each table
     # Load tenants csv files into tenants table: python users-service-data-pump.py <input path of csv files>
     python3 users-service-data-pump.py output/tenants
